@@ -19,4 +19,6 @@ oc new-project "${NAMESPACE}"
 oc new-app -n "$NAMESPACE" --template=jenkins-ephemeral --name=jenkins
 oc set env -n "${NAMESPACE}" dc/jenkins JENKINS_OPTS=--sessionTimeout=86400
 
-oc apply -f simple-setup/setup.yaml
+oc process -f simple-setup/setup.yaml -p DEVELOPER_ACCOUNT_ID=3 -p PRIVATE_BASE_URL="https://gugus" | oc apply -f - 
+oc start-build simple-setup --follow
+
